@@ -91,8 +91,94 @@ python manage.py runserver
 
 Примеры запросов к API:
 
+Загрузка изображений осуществляется с помощью кодирования base64 в виде строки байтов
+
 Получение списка всех постов осуществляется следующим GET запросом:
 http://127.0.0.1:8000/api/v1/posts/
+
+RESPONSE:
+{
+    "count": 123,
+    "next": "http://api.example.org/accounts/?offset=400&limit=100",
+    "previous": "http://api.example.org/accounts/?offset=200&limit=100",
+    "results": [
+    {...}
+    ]
+}
+
+Получение конкретного поста осуществляется следующим GET запросом:
+http://127.0.0.1:8000/api/v1/posts/{id}/
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "pub_date": "2019-08-24T14:15:22Z",
+    "image": "string",
+    "group": 0
+}
+
+Получение списка сообществ - GET запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/groups/
+
+RESPONSE:
+[
+    {
+        "id": 0,
+        "title": "string",
+        "slug": "string",
+        "description": "string"
+    }
+]
+
+Получение информации о конкретном сообществе - GET запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/groups/{id}/
+
+RESPONSE:
+{
+    "id": 0,
+    "title": "string",
+    "slug": "string",
+    "description": "string"
+}
+
+Получение информации о всех подписках пользователя - GET запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/follow/
+
+RESPONSE:
+[
+    {
+        "user": "string",
+        "following": "string"
+    }
+]
+
+Получение информации о всех комментариях к посту - GET запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/
+
+RESPONSE:
+[
+    {
+        "id": 0,
+        "author": "string",
+        "text": "string",
+        "created": "2019-08-24T14:15:22Z",
+        "post": 0
+    }
+]
+
+Получение информации о конкретном комментарии к посту - GET запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/{id}/
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "created": "2019-08-24T14:15:22Z",
+    "post": 0
+}
 
 Создание нового поста осуществляется следующим POST запросом на эндпоинт:
 http://127.0.0.1:8000/api/v1/posts/
@@ -103,8 +189,156 @@ Body:
     "group": 0
 }
 
-Удаление поста его автором - DElETE запрос на эндпоинт:
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "pub_date": "2019-08-24T14:15:22Z",
+    "image": "string",
+    "group": 0
+}
+
+Создание нового комментария к посту осуществляется следующим POST запросом на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/
+Body:
+{
+    "text": "string"
+}
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "created": "2019-08-24T14:15:22Z",
+    "post": 0
+}
+
+Создание новой подписки - POST запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/follow/
+Body:
+{
+    "following": "string"
+}
+
+RESPONSE:
+{
+    "user": "string",
+    "following": "string"
+}
+
+
+Обновление данных поста осуществляется PUT запросом на эндпоинт:
 http://127.0.0.1:8000/api/v1/posts/{id}/
+Body:
+{
+    "text": "string",
+    "image": "string",
+    "group": 0
+}
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "pub_date": "2019-08-24T14:15:22Z",
+    "image": "string",
+    "group": 0
+}
+
+Обновление данных комментария осуществляется PUT запросом на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/{id}/
+Body:
+{
+    "text": "string"
+}
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "created": "2019-08-24T14:15:22Z",
+    "post": 0
+}
+
+
+Частичное обновление поста осуществляется PATCH запросом на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{id}/
+Body:
+{
+    "text": "string",
+    "image": "string",
+    "group": 0
+}
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "pub_date": "2019-08-24T14:15:22Z",
+    "image": "string",
+    "group": 0
+}
+
+Частичное обновление комментария - PATCH запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/{id}/
+Body:
+{
+    "text": "string"
+}
+
+RESPONSE:
+{
+    "id": 0,
+    "author": "string",
+    "text": "string",
+    "created": "2019-08-24T14:15:22Z",
+    "post": 0
+}
+
+Удаление поста его автором - DELETE запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{id}/
+
+Удаление комментария его автором - DELETE запрос на эндпоинт:
+http://127.0.0.1:8000/api/v1/posts/{post_id}/comments/{id}/
+
+Получение токена для пользователя осуществляется POST запросом на эндпоинт:
+http://127.0.0.1:8000/api/v1/jwt/create/
+Body:
+{
+    "username": "string",
+    "password": "string"
+}
+
+RESPONSE:
+{
+    "refresh": "string",
+    "access": "string"
+}
+
+Обновление имеющегося токена осуществляется POST запросом на эндпоинт:
+http://127.0.0.1:8000/api/v1/jwt/refresh/
+Body:
+{
+    "refresh": "string"
+}
+
+RESPONSE:
+{
+    "refresh": "string"
+}
+
+Проверка токена осуществляется POST запросом на эндпоинт:
+http://127.0.0.1:8000/api/v1/jwt/verify/
+Body:
+{
+    "token": "string"
+}
+В случае отсутсвии такого токена в ответе будет выведена ошибка валидности токена
 
 
 
